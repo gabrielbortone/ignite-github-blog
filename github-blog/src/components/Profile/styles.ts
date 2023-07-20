@@ -10,6 +10,8 @@ export const ProfileContainer = styled.section`
     padding: 2rem;
     gap: 1.5rem;
     align-items: flex-start;
+    margin-top: -6rem;
+    box-shadow: 0px 2px 28px 0px rgba(0, 0, 0, 0.20); 
 `;
 
 export const ProfileImageContainer = styled.div`
