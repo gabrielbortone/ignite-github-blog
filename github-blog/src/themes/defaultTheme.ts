@@ -8,7 +8,10 @@ export const defaultTheme = {
     'base-profile': '#0B1B2B',
     'base-label': '#3A536B',
     'base-span': '#7B96B2',
-    'base-background': '#071422'
+    'base-background': '#071422',
+    'base-post': '#112131',
+    'base-border': '#1C2F41',
+    'base-input': '#040F1A',
   } as const
 
 export const Title = styled.h1`
