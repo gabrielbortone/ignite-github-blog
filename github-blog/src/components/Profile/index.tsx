@@ -4,33 +4,35 @@ import LinkIcon from '../../assets/redirectIcon.svg';
 import githubIcon from '../../assets/github-icon.svg';
 import organizationIcon from '../../assets/organization-icon.svg';
 import usersIcon from '../../assets/users-icon.svg';
+import { useContext } from 'react';
+import { GithubBlogContext} from "../../contexts/GithubBlogContext";
 
 export default function Profile(){
-
+    const {profile} = useContext(GithubBlogContext);
 
     return(
         <ProfileContainer>
             <ProfileImageContainer>
-                <img src=''/>
+                <img src={profile?.avatar_url}/>
             </ProfileImageContainer>
             <ProfileTextsContainer>
                 <div>
-                    <Title>Gabriel Bortone</Title>
-                    <ProfileLinkToGithub>GITHUB <img src={LinkIcon}/></ProfileLinkToGithub>
+                    <Title>{profile?.name}</Title>
+                    <ProfileLinkToGithub href={profile?.html_url}>GITHUB <img src={LinkIcon}/></ProfileLinkToGithub>
                 </div>
-                <TextBase>TEstesteststestete</TextBase>
+                <TextBase>{profile?.bio}</TextBase>
                 <ProfileInfoContainer>
                     <ProfileInfoSpanItem>
                         <img src={githubIcon}/>
-                        <p>gabrielbortone</p>
+                        <p>{profile?.login}</p>
                     </ProfileInfoSpanItem>
                     <ProfileInfoSpanItem>
                         <img src={organizationIcon}/>
-                        <p>Datamar</p>
+                        <p>{profile?.company ?? 'Nenhuma'}</p>
                     </ProfileInfoSpanItem>
                     <ProfileInfoSpanItem>
                         <img src={usersIcon}/>
-                        <p>5 seguidores</p>
+                        <p>{profile?.followers} seguidores</p>
                     </ProfileInfoSpanItem>
                 </ProfileInfoContainer>
             </ProfileTextsContainer>

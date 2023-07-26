@@ -4,7 +4,6 @@ import effect2 from '../../assets/effect2.png';
 import logoImagem from '../../assets/logo.svg';
 
 export default function Header(){
-
     return (
         <HeaderContainer>
             <HeaderContainerItem><img src={effect1} /></HeaderContainerItem>
