@@ -6,6 +6,7 @@ interface GithubBlogContextProviderProps {
 }
 interface  GithubBlogContextProviderContextType {
     profile: GithubProfile | undefined
+    posts: CompletePost[] | undefined
 }
 
 interface GithubProfile{
@@ -18,10 +19,12 @@ interface GithubProfile{
     company: string | null
 }
 
-interface CompletePost {
+export interface CompletePost {
     title: string
     numberOfComments: number
     content: string
+    created_at: string
+    id: number
 }
 
 export const GithubBlogContext = createContext<GithubBlogContextProviderContextType>({} as GithubBlogContextProviderContextType)
@@ -45,7 +48,18 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
                 q: `${query}repo:${repositorioBlog}`
             }
         }) 
-        console.log(response);
+        const { items } = response.data;
+        console.log(items);
+        const posts = items.map((item: any)=> {
+            return {
+                title: item.title,
+                numberOfComments: item.comments,
+                content: item.body,
+                created_at: item.created_at,
+                id: item.id
+            }
+        });
+        setPosts(posts);
     }
 
     async function fetchUsuario(){
@@ -63,7 +77,7 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
     }
     
     return (
-        <GithubBlogContext.Provider value={{profile}}>
+        <GithubBlogContext.Provider value={{profile, posts}}>
             {children}
         </GithubBlogContext.Provider>
     )

@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const PostContainer = styled.div`
@@ -9,6 +10,7 @@ export const PostContainer = styled.div`
     flex-direction: column;
     padding: 1.5rem 1rem;
     width: 24.5rem;
+    height: 16.25rem;
     align-self: center;
     justify-self: center;
     border-radius: 8px;
@@ -17,7 +19,10 @@ export const PostContainer = styled.div`
 export const PostHeaderContainer = styled.div`
     display: flex;
     gap: 1rem;
-
+    width: 100%;
+    align-items: center;
+    padding: 0 1rem;
+    justify-content: space-between;
 `;
 
 export const PostHeaderTitulo = styled.h1`
@@ -39,6 +44,10 @@ export const PostContentContainer = styled.div`
     font-size: 1rem;
     line-height: 1.6;
     color: ${props=> props.theme['base-text']};
+    display: flex;
+    width: 100%;
+    text-align: left;
+
     p{
         display: -webkit-box;
         -webkit-line-clamp: 4; /** número de linhas que você quer exibir */
@@ -50,4 +59,9 @@ export const PostContentContainer = styled.div`
         margin-bottom: 1rem;
         white-space: wrap;
     }
+`;
+
+export const PostContentLink = styled(NavLink)`
+    cursor: pointer;
+    text-decoration: none;
 `;

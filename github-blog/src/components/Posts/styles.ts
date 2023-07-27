@@ -7,4 +7,6 @@ export const PostsContainer = styled.section`
     align-items: center;
     margin: 3rem auto;
     max-width: 52rem;
+    align-items: stretch;
+    justify-content: stretch;
 `;
