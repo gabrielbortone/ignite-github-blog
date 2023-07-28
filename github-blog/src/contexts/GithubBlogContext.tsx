@@ -7,6 +7,8 @@ interface GithubBlogContextProviderProps {
 interface  GithubBlogContextProviderContextType {
     profile: GithubProfile | undefined
     posts: CompletePost[] | undefined
+    fetchActualPost: (id: number) => void
+    actualPost: CompletePostById | undefined
 }
 
 interface GithubProfile{
@@ -27,12 +29,17 @@ export interface CompletePost {
     id: number
 }
 
+interface CompletePostById extends CompletePost{
+
+}
+
 export const GithubBlogContext = createContext<GithubBlogContextProviderContextType>({} as GithubBlogContextProviderContextType)
 
 export function GithubBlogContextProvider({children}: GithubBlogContextProviderProps) {
     const [profile, setProfile] = useState<GithubProfile>();
     const [posts, setPosts] = useState<CompletePost[] | undefined>([]);
     const [query, setQuery] = useState<string | undefined>(' ');
+    const [actualPost, setActualPost] = useState<CompletePostById | undefined>();
 
     useEffect(()=>{
         fetchUsuario();
@@ -41,6 +48,12 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
     useEffect(()=> {
         fetchPosts(query);
     }, [query])
+
+    async function fetchActualPost(id: number) {
+        
+
+
+    }
 
     async function fetchPosts(query?: string) {
         const response = await apiBlog.get('', {
@@ -77,7 +90,7 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
     }
     
     return (
-        <GithubBlogContext.Provider value={{profile, posts}}>
+        <GithubBlogContext.Provider value={{profile, posts, actualPost, fetchActualPost}}>
             {children}
         </GithubBlogContext.Provider>
     )
