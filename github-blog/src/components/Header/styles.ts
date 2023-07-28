@@ -12,11 +12,19 @@ export const HeaderContainer = styled.header`
 export const HeaderContainerItem = styled.div`
     width: 23.125rem;
     height: 14.75rem;
-    flex-shrink: 0; 
     img{
         max-width: 100%;
         max-height: 100%;
         margin-top: 2rem;
+    }
+    @media (max-width:1024px){
+        max-width: 12rem;
+        max-height: 8rem;
+        position: relative;
+
+        img {
+            margin-top: 0;
+        }
     }
 `;
 

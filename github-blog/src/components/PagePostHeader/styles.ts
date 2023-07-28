@@ -37,6 +37,10 @@ export const PostPageHeaderMainContainer = styled.section`
     align-items: flex-start;
     margin-top: -6rem;
     box-shadow: 0px 2px 28px 0px rgba(0, 0, 0, 0.20); 
+    @media (max-width:960px){
+        max-width: 100%;
+        height: max-content;
+    }
 `;
 
 export const PostPageNavContainer = styled.nav`

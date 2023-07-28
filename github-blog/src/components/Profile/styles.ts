@@ -12,6 +12,16 @@ export const ProfileContainer = styled.section`
     align-items: flex-start;
     margin-top: -6rem;
     box-shadow: 0px 2px 28px 0px rgba(0, 0, 0, 0.20); 
+    z-index: 1000;
+
+    @media (max-width:1024px){
+        width: 100%;
+        height: 15rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        position: absolute;
+
+    }
 `;
 
 export const ProfileImageContainer = styled.div`
