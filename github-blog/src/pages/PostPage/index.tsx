@@ -8,7 +8,6 @@ import { CompletePost, GithubBlogContext } from "../../contexts/GithubBlogContex
 export default function PostPage(){
     let { id } = useParams();
     const { posts } = useContext(GithubBlogContext);
-    const [actualPost, setActualPost] = useState<CompletePost | undefined>();
 
     useEffect(()=> {
         if(id && posts){
