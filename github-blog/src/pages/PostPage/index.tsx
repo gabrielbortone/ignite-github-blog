@@ -3,24 +3,24 @@ import Header from "../../components/Header";
 import PagePostContent from "../../components/PagePostContent";
 import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { CompletePost, GithubBlogContext } from "../../contexts/GithubBlogContext";
+import { CompletePostById, GithubBlogContext } from "../../contexts/GithubBlogContext";
 
 export default function PostPage(){
     let { id } = useParams();
-    const { posts } = useContext(GithubBlogContext);
+    const { fetchActualPost } = useContext(GithubBlogContext);
+    const [actualPost, setActualPost] = useState<CompletePostById | undefined>();
 
     useEffect(()=> {
-        if(id && posts){
-            const identifier = parseInt(id);
-            setActualPost(posts.find(post => post.id === identifier));
+        if(id){
+            fetchActualPost(Number.parseInt(id)).then(data=> setActualPost(data));
         }
     }, [id])
 
-    if(actualPost){
+    if(id){
         return <>
             <Header />
-            <PagePostHeader />
-            <PagePostContent description={actualPost.content} />
+            <PagePostHeader url_repositorio={actualPost?.repository_url} comments_number={actualPost?.comments} title={actualPost?.title} />
+            <PagePostContent description={actualPost?.body} />
          </>
     }
 

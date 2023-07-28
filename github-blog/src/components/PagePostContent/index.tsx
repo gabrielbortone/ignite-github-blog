@@ -1,7 +1,7 @@
 import { PagePostContentContainer, PagePostContentParagraph } from "./styles";
 
 interface PagePostContentProps {
-    description: string
+    description: string | undefined
 }
 
 export default function PagePostContent({description} : PagePostContentProps){

@@ -6,32 +6,48 @@ import comments from "../../assets/comments.svg";
 import { Title } from "../../themes/defaultTheme";
 import goback from "../../assets/goback.svg";
 import redirection from "../../assets/redirectIcon.svg";
+import { useContext } from "react";
+import { GithubBlogContext } from "../../contexts/GithubBlogContext";
 
-export default function PagePostHeader(){
+interface PagePostHeaderProps {
+    url_repositorio: string | undefined
+    comments_number: number | undefined
+    title: string | undefined
+}
+
+
+export default function PagePostHeader({ url_repositorio, comments_number,title } : PagePostHeaderProps){
+
+    const { profile } = useContext(GithubBlogContext);
+
+    function goHistoryBack(){
+        history.back();
+    }
+
     return <PostPageHeaderMainContainer>
         <PostPageNavContainer>
-            <a>
+            <a onClick={goHistoryBack}>
                 <img src={goback}/>
                 Voltar
             </a>
-            <a>
+            <a href={url_repositorio}>
                 Ver no github
                 <img src={redirection}/>
             </a>
         </PostPageNavContainer>
-        <Title>JavaScript data types and data strctures</Title>
+        <Title>{title}</Title>
         <PostPageHeaderInfoContainer>
             <PostPageHeaderInfoSpanItem>
                 <img src={githubIcon}/>
-                <p>gabrielbortone</p>
+                <p>{profile?.login}</p>
             </PostPageHeaderInfoSpanItem>
             <PostPageHeaderInfoSpanItem>
                 <img src={organizationIcon}/>
-                <p>Datamar</p>
+                <p>{profile?.company ?? "Nenhuma"}</p>
             </PostPageHeaderInfoSpanItem>
             <PostPageHeaderInfoSpanItem>
                 <img src={comments}/>
-                <p>5 seguidores</p>
+                <p>{comments_number} comentários</p>
             </PostPageHeaderInfoSpanItem>
         </PostPageHeaderInfoContainer>
     </PostPageHeaderMainContainer>

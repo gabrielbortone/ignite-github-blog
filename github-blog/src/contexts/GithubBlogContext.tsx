@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { api, apiBlog, repositorioBlog } from "../lib/api";
+import { api, apiBlog, apiBlogIssues, repositorioBlog } from "../lib/api";
 
 interface GithubBlogContextProviderProps {
     children: ReactNode;
@@ -7,8 +7,9 @@ interface GithubBlogContextProviderProps {
 interface  GithubBlogContextProviderContextType {
     profile: GithubProfile | undefined
     posts: CompletePost[] | undefined
-    fetchActualPost: (id: number) => void
-    actualPost: CompletePostById | undefined
+    fetchActualPost: (id: number) => Promise<CompletePostById | undefined>
+    numberOfPosts: number
+    searchByQuery: (value: string) => void
 }
 
 interface GithubProfile{
@@ -19,6 +20,7 @@ interface GithubProfile{
     html_url: string
     name: string
     company: string | null
+    public_repos: number
 }
 
 export interface CompletePost {
@@ -29,8 +31,13 @@ export interface CompletePost {
     id: number
 }
 
-interface CompletePostById extends CompletePost{
-
+export interface CompletePostById{
+    repository_url: string
+    title: string
+    number: number
+    body: string
+    comments: number,
+    created_at: string
 }
 
 export const GithubBlogContext = createContext<GithubBlogContextProviderContextType>({} as GithubBlogContextProviderContextType)
@@ -39,7 +46,7 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
     const [profile, setProfile] = useState<GithubProfile>();
     const [posts, setPosts] = useState<CompletePost[] | undefined>([]);
     const [query, setQuery] = useState<string | undefined>(' ');
-    const [actualPost, setActualPost] = useState<CompletePostById | undefined>();
+    const [numberOfPosts, setNumberOfPosts] = useState<number>(0);
 
     useEffect(()=>{
         fetchUsuario();
@@ -49,10 +56,32 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
         fetchPosts(query);
     }, [query])
 
+    useEffect(() => {
+        setNumberOfPosts(posts?.length ?? 0);
+    }, [posts])
+
+    function searchByQuery(value: string){
+        setQuery(value);
+    }
+
+
     async function fetchActualPost(id: number) {
+        const response = await apiBlogIssues.get(`/${id}`);
+        const { data } = response;
+        const {repository_url, title, number, body, comments, created_at} = data;
+
+        if(data){
+            return {
+                repository_url,
+                title,
+                number,
+                body,
+                comments,
+                created_at
+            } as CompletePostById
+        }
         
-
-
+        return undefined;
     }
 
     async function fetchPosts(query?: string) {
@@ -62,14 +91,13 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
             }
         }) 
         const { items } = response.data;
-        console.log(items);
         const posts = items.map((item: any)=> {
             return {
                 title: item.title,
                 numberOfComments: item.comments,
                 content: item.body,
                 created_at: item.created_at,
-                id: item.id
+                id: item.number
             }
         });
         setPosts(posts);
@@ -77,7 +105,7 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
 
     async function fetchUsuario(){
         const response = await api.get("");
-        const {avatar_url, bio, followers, login, html_url, company, name} = response.data;
+        const {avatar_url, bio, followers, login, html_url, company, name, public_repos} = response.data;
         setProfile({
             avatar_url,
             bio,
@@ -85,12 +113,13 @@ export function GithubBlogContextProvider({children}: GithubBlogContextProviderP
             login,
             html_url,
             company,
-            name
+            name,
+            public_repos
         })
     }
     
     return (
-        <GithubBlogContext.Provider value={{profile, posts, actualPost, fetchActualPost}}>
+        <GithubBlogContext.Provider value={{profile, posts, numberOfPosts, fetchActualPost, searchByQuery}}>
             {children}
         </GithubBlogContext.Provider>
     )

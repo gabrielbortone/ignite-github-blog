@@ -12,3 +12,7 @@ export const apiBlog = axios.create({
     baseURL: `https://api.github.com/search/issues`
 });
 
+export const apiBlogIssues = axios.create({
+    baseURL: `https://api.github.com/repos/${repositorioBlog}/issues`
+})
+
